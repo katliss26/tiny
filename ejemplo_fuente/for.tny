@@ -1,1 +1,8 @@
-for(i=0;10<i;i=i+2)
+for(i:=0;10<i;i:=i+2)
+	read x;
+	if 10 < x then
+	   write 1
+	else
+	   write 2
+	 end
+end

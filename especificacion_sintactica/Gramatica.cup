@@ -14,7 +14,7 @@ action code {:
 	}
 :}
 
-/* Simbolos Terminales 
+/* Simbolos Terminales */
 
 terminal BOOL;
 terminal VOID;
@@ -24,7 +24,6 @@ terminal AND;
 terminal OR;
 terminal RETURN;
 terminal COMA;
-*/
 terminal IF;
 terminal THEN;
 terminal ELSE;
@@ -133,9 +132,11 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) Sy
 							:}
 		;
 
-for_stmt	::=	FOR LPAREN assign_stmt:as SEMI exp:ex SEMI assign_stmt:se  RPAREN 
+for_stmt	::=	FOR LPAREN assign_stmt:as SEMI exp:ex SEMI assign_stmt:se  RPAREN
+				stmt_seq:cuerpo
+				END 
 				{: if(modoDepuracion) System.out.println("\t regla FOR"); 
-							RESULT = new NodoFor(as,ex,se);
+							RESULT = new NodoFor(as,ex,se,cuerpo);
 							:}
 							;
 

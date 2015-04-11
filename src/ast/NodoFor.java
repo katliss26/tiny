@@ -7,8 +7,9 @@ public class NodoFor extends NodoBase {
 	private NodoBase se;
 	private NodoBase cuerpo;
 	
-	public NodoFor(NodoBase as,NodoBase ex,NodoBase se) {
+	public NodoFor(NodoBase as,NodoBase ex,NodoBase se, NodoBase cuerpo) {
 		super();
+                this.cuerpo = cuerpo;
 		this.as = as;
 		this.ex = ex;
 		this.se = se;
@@ -19,6 +20,7 @@ public class NodoFor extends NodoBase {
 		this.as = null;
 		this.ex = null;
 		this.se = null;
+                this.cuerpo = null;
 	}
 
 	public NodoBase getAs() {
@@ -44,7 +46,6 @@ public class NodoFor extends NodoBase {
 	public void setSe(NodoBase se) {
 		this.se = se;
 	}
-/*
 	public NodoBase getCuerpo() {
 		return cuerpo;
 	}
@@ -52,5 +53,5 @@ public class NodoFor extends NodoBase {
 	public void setCuerpo(NodoBase cuerpo) {
 		this.cuerpo = cuerpo;
 	}
-        */
+
 }
