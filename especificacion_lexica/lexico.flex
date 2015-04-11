@@ -42,7 +42,13 @@ identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
 espacio		= [ \t]+
 %%
-"if"            {	if(debug) System.out.println("token IF");
+"bool"      {	if(debug) System.out.println("token BOOL");
+			return sf.newSymbol("BOOL",sym.BOOL);
+			}
+"void"      {	if(debug) System.out.println("token VOID");
+			return sf.newSymbol("VOID",sym.VOID);
+			}			
+"if"        {	if(debug) System.out.println("token IF");
 			return sf.newSymbol("IF",sym.IF);
 			}
 "then"          { if(debug) System.out.println("token THEN");
@@ -60,6 +66,12 @@ espacio		= [ \t]+
 "until"         {	if(debug) System.out.println("token UNTIL");
 			return sf.newSymbol("UNTIL",sym.UNTIL);
 			}
+"for"       {	if(debug) System.out.println("token FOR");
+			return sf.newSymbol("FOR",sym.FOR);
+			}
+"return"	{	if(debug) System.out.println("token RETURN");
+			return sf.newSymbol("RETURN",sym.RETURN);
+			}		
 "read"          {	if(debug) System.out.println("token READ");
 			return sf.newSymbol("READ",sym.READ);
 			}
@@ -75,6 +87,18 @@ espacio		= [ \t]+
 "<"             {	if(debug) System.out.println("token LT");
 			return sf.newSymbol("LT",sym.LT);
 			}
+">"             {   if(debug) System.out.println("token GT");
+			return sf.newSymbol("GT",sym.GT);
+			}
+"<="             {	if(debug) System.out.println("token LE");
+			return sf.newSymbol("LE",sym.LE);
+			}
+">="        {	if(debug) System.out.println("token GE");
+			return sf.newSymbol("GE",sym.GE);
+			}
+"!="        {	if(debug) System.out.println("token NEQ");
+			return sf.newSymbol("NEQ",sym.NEQ);
+			}									
 "+"             {	if(debug) System.out.println("token PLUS");
 			return sf.newSymbol("PLUS",sym.PLUS);
 			}
@@ -96,6 +120,10 @@ espacio		= [ \t]+
 ";"             {	if(debug) System.out.println("token SEMI");
 			return sf.newSymbol("SEMI",sym.SEMI);
 			}
+","         { if(debug) System.out.println("token COMA");
+			return sf.newSymbol("COMA",sym.COMA);
+            }
+
 {numero}        {	if(debug) System.out.println("token NUM");
 			return sf.newSymbol("NUM",sym.NUM,new Integer(yytext()));
 			}

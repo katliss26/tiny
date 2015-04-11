@@ -8,7 +8,7 @@
 3:       ST       0,0(5)      leer: almaceno el valor entero leido en el id x
 *      <- leer
 *      -> if
-*      -> Operacion: menor
+*      -> Operacion: menor 
 *      -> constante
 4:       LDC       0,10(0)      cargar constante: 10
 *      <- constante
