@@ -1,0 +1,16 @@
+GRAMATICA:
+
+program		-> 	stmt_seq
+stmt_seq	->	stmt;
+stmt 		->	if_stmt | repeat_stmt | type_stmt | assign_stmt | read_stmt | write_stmt | error
+if_stmt		->	IF exp THEN stmt_seq END | IF exp THEN stmt_seq ELSE stmt_seq END
+repeat_stmt ->	REPEAT stmt_seq UNTIL exp
+type_stmt	->	INT dec | BOOL dec 
+assign_stmt	->	ID ASSIGN exp
+read_stmt	->	READ ID
+write_stmt 	->	WRITE exp
+exp			->	simple_exp LT simple_exp | simple_exp GT simple_exp | simple_exp LE simple_exp | simple_exp GE simple_exp | simple_exp EQ simple_exp | simple_exp NEQ simple_exp | simple_exp
+simple_exp 	->	simple_exp PLUS term | simple_exp MINUS term | term
+term		-> term TIMES factor | term OVER factor
+factor		-> LPAREN exp RPAREN | NUM | ID | error
+dec 		-> factor | ,dec
