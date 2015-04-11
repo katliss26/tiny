@@ -102,10 +102,14 @@ espacio		= [ \t]+
 "<="             {	if(debug) System.out.println("token LE");
 			return sf.newSymbol("LE",sym.LE);
 			}
+<<<<<<< HEAD
 ">="        {	if(debug) System.out.println("token GE");
+=======
+">="        	{	if(debug) System.out.println("token GE");
+>>>>>>> 52e42e1903f7730f411d1fa1da72f5c367ceaaab
 			return sf.newSymbol("GE",sym.GE);
 			}
-"!="        {	if(debug) System.out.println("token NEQ");
+"!="        	{	if(debug) System.out.println("token NEQ");
 			return sf.newSymbol("NEQ",sym.NEQ);
 			}									
 "+"             {	if(debug) System.out.println("token PLUS");

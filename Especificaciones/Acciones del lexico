@@ -2,21 +2,6 @@ Analizador lexico
 
 - Agregar las palabras reservadas
 	for (ya)
-<<<<<<< HEAD
-	bool
-	int
-	void
-	function
-	begin
-	and
-	or
-	return
-	!= Ya
-	>  YA
-	>= YA
-	<= YA
-	- (negativo)
-=======
 	bool (ya)
 	int (ya)
 	void (ya)
@@ -30,6 +15,5 @@ Analizador lexico
 	>= (ya)
 	<= (ya)
 	- (negativo) (falta)
->>>>>>> e0b46d545a4639859ec7b53249ea64e7131cc49c
-	
+
 - Generar el lexico
