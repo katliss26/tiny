@@ -72,7 +72,7 @@ precedence left TIMES;
 
 
 /* REGLAS GRAMATICALES */
-program     ::= stmt_seq:s	{: if(modoDepuracion) System.out.println("\t regla 1"); 
+program     ::=  BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
 					ast = s;
 					:}
 		;
@@ -127,10 +127,6 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) Sy
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}
 		;
-
-for_stmt	::=	FOR LPAREN assing_stmt:as COMA exp:ex COMA simple_exp:se  RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla 5"); 
-							RESULT = new NodoRepeat(as,ex,se,cuerpo);
-							:}
 
 assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
 				/*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
