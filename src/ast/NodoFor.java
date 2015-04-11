@@ -54,6 +54,4 @@ public class NodoFor extends NodoBase {
 	public void setCuerpo(NodoBase cuerpo) {
 		this.cuerpo = cuerpo;
 	}
-
-
 }
