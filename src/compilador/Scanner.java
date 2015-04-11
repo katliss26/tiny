@@ -611,11 +611,11 @@ class Scanner implements java_cup.runtime.Scanner {
       zzMarkedPos = zzMarkedPosL;
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
-        case 23: 
+        /*case 23: 
           { if(debug) System.out.println("token INT");
 			return sf.newSymbol("INT",sym.INT);
           }
-        case 38: break;
+        case 38: break;*/
         case 3: 
           { if(debug) System.out.println("token ID");
 				return sf.newSymbol("ID",sym.ID,new String(yytext()));
@@ -626,7 +626,8 @@ class Scanner implements java_cup.runtime.Scanner {
 			return sf.newSymbol("LE",sym.LE);
           }
         case 40: break;
-        case 29: 
+        
+        /*case 29: 
           { if(debug) System.out.println("token VOID");
 			return sf.newSymbol("VOID",sym.VOID);
           }
@@ -635,17 +636,17 @@ class Scanner implements java_cup.runtime.Scanner {
           { if(debug) System.out.println("token BEGIN");
 			return sf.newSymbol("BEGIN",sym.BEGIN);
           }
-        case 42: break;
+        case 42: break;*/
         case 22: 
           { if(debug) System.out.println("token NEQ");
 			return sf.newSymbol("NEQ",sym.NEQ);
           }
         case 43: break;
-        case 36: 
+        /*case 36: 
           { if(debug) System.out.println("token RETURN");
 			return sf.newSymbol("RETURN",sym.RETURN);
           }
-        case 44: break;
+        case 44: break;*/
         case 7: 
           { if(debug) System.out.println("token LT");
 			return sf.newSymbol("LT",sym.LT);
@@ -675,20 +676,20 @@ class Scanner implements java_cup.runtime.Scanner {
 			return sf.newSymbol("TIMES",sym.TIMES);
           }
         case 50: break;
-        case 17: 
+        /*case 17: 
           { if(debug) System.out.println("token OR");
 			return sf.newSymbol("OR",sym.OR);
           }
-        case 51: break;
+        case 51: break;*/
         case 1: 
           { System.err.println("Caracter Ilegal encontrado en analisis lexico: " + yytext() + "\n");
           }
         case 52: break;
-        case 25: 
+        /*case 25: 
           { if(debug) System.out.println("token AND");
 			return sf.newSymbol("AND",sym.AND);
           }
-        case 53: break;
+        case 53: break;*/
         case 31: 
           { if(debug) System.out.println("token ELSE");
 			return sf.newSymbol("ELSE",sym.ELSE);
@@ -733,11 +734,11 @@ class Scanner implements java_cup.runtime.Scanner {
 			return sf.newSymbol("NUM",sym.NUM,new Integer(yytext()));
           }
         case 62: break;
-        case 16: 
+        /*case 16: 
           { if(debug) System.out.println("token COMA");
 			return sf.newSymbol("COMA",sym.COMA);
           }
-        case 63: break;
+        case 63: break;*/
         case 34: 
           { if(debug) System.out.println("token UNTIL");
 			return sf.newSymbol("UNTIL",sym.UNTIL);
@@ -753,11 +754,11 @@ class Scanner implements java_cup.runtime.Scanner {
 			return sf.newSymbol("GE",sym.GE);
           }
         case 66: break;
-        case 28: 
+        /*case 28: 
           { if(debug) System.out.println("token BOOL");
 			return sf.newSymbol("BOOL",sym.BOOL);
           }
-        case 67: break;
+        case 67: break;*/
         case 32: 
           { if(debug) System.out.println("token READ");
 			return sf.newSymbol("READ",sym.READ);

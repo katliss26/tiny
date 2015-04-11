@@ -14,7 +14,7 @@ action code {:
 	}
 :}
 
-/* Simbolos Terminales */
+/* Simbolos Terminales 
 
 terminal BOOL;
 terminal VOID;
@@ -22,7 +22,9 @@ terminal INT;
 terminal BEGIN;
 terminal AND;
 terminal OR;
+terminal RETURN;
 terminal COMA;
+*/
 terminal IF;
 terminal THEN;
 terminal ELSE;
@@ -30,7 +32,6 @@ terminal END;
 terminal REPEAT;
 terminal UNTIL;
 terminal FOR;
-terminal RETURN;
 terminal READ;
 terminal WRITE;
 terminal String ID;
@@ -101,6 +102,9 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
             | repeat_stmt:srep	{: if(modoDepuracion) System.out.println("\t regla 3b"); 
 						RESULT=srep;
 						:}
+			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3b.1"); 
+						RESULT=sfor;
+						:}
             | assign_stmt:sasi	{: if(modoDepuracion) System.out.println("\t regla 3c"); 
 						RESULT=sasi;
 						:}
@@ -129,9 +133,11 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) Sy
 							:}
 		;
 
-for_stmt	::=	FOR LPAREN assing_stmt:as COMA exp:ex COMA simple_exp:se  RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla 5"); 
-							RESULT = new NodoRepeat(as,ex,se,cuerpo);
+for_stmt	::=	FOR LPAREN assign_stmt:as SEMI exp:ex SEMI assign_stmt:se  RPAREN 
+				{: if(modoDepuracion) System.out.println("\t regla FOR"); 
+							RESULT = new NodoFor(as,ex,se);
 							:}
+							;
 
 assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
 				/*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
