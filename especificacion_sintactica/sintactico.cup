@@ -16,6 +16,13 @@ action code {:
 
 /* Simbolos Terminales */
 
+terminal BOOL;
+terminal VOID;
+terminal INT;
+terminal BEGIN;
+terminal AND;
+terminal OR;
+terminal COMA;
 terminal IF;
 terminal THEN;
 terminal ELSE;
@@ -23,6 +30,7 @@ terminal END;
 terminal REPEAT;
 terminal UNTIL;
 terminal FOR;
+terminal RETURN;
 terminal READ;
 terminal WRITE;
 terminal String ID;
@@ -33,7 +41,7 @@ terminal LT;
 /*Declaraciones nuevas*/
 terminal GT;
 terminal GE;
-terminal LE
+terminal LE;
 terminal NEQ;
 /*-----------*/
 terminal PLUS;
@@ -43,16 +51,6 @@ terminal OVER;
 terminal LPAREN;
 terminal RPAREN;
 terminal SEMI;
-terminal BOOL;
-terminal VOID;
-terminal RETURN;
-terminal GT;
-terminal GE;
-terminal NEQ;
-terminal COMA;
-
-
-
 /* Simbolos No Terminales */
 non terminal program;
 non terminal NodoBase stmt_seq;
@@ -170,20 +168,30 @@ exp         ::= simple_exp:exI LT simple_exp:exD{:
               		   RESULT = new NodoOperacion(exI,tipoOp.menor,exD);
                 :}
                 | simple_exp:exI GT simple_exp:exD{:
-                   System.out.println("\t Esta comparando expresion > expresion"); 
+                           
+                  	if(modoDepuracion) System.out.println("\t regla 9a.1"); 
+              		   RESULT = new NodoOperacion(exI,tipoOp.mayor,exD);
                 :} 
                 | simple_exp:exI LE simple_exp:exD{:
-                   System.out.println("\t Esta comparando expresion <= expresion"); 
+                      
+                      if(modoDepuracion) System.out.println("\t regla 9a.2"); 
+              		   RESULT = new NodoOperacion(exI,tipoOp.menor_eq,exD);
+                      
                 :} 
                 | simple_exp:exI GE simple_exp:exD{:
-                  System.out.println("\t Esta comparando expresion => expresion"); 
+                  
+                  if(modoDepuracion) System.out.println("\t regla 9a.3"); 
+              	     RESULT = new NodoOperacion(exI,tipoOp.mayor_eq,exD);
+                  
                 :} 
 			    |simple_exp:exI EQ simple_exp:exD{:
 					if(modoDepuracion) System.out.println("\t regla 9b"); 
 					   RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
 				 :}
 				|simple_exp:exI NEQ simple_exp:exD{:
-				   System.out.println("\t Esta comparando expresion != expresion");
+				  if(modoDepuracion) System.out.println("\t regla 9b"); 
+					   RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
+				  
 				 :}
 				| simple_exp:ex	{: 
 					if(modoDepuracion) System.out.println("\t regla 9c"); 
