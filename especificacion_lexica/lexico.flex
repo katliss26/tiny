@@ -28,6 +28,8 @@ import java_cup.runtime.*;
 %eofval}
 
 /* Acceso a la columna y fila actual de analisis CUP */
+/* ESTO ES UNA PRUEBA... */
+%line
 %line
 %column
 
