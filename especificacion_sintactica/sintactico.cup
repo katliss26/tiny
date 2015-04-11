@@ -20,9 +20,10 @@ terminal BOOL;
 terminal VOID;
 terminal INT;
 terminal BEGIN;
+terminal RETURN;
+terminal COMA;
 terminal AND;
 terminal OR;
-terminal COMA;
 terminal IF;
 terminal THEN;
 terminal ELSE;
@@ -30,7 +31,6 @@ terminal END;
 terminal REPEAT;
 terminal UNTIL;
 terminal FOR;
-terminal RETURN;
 terminal READ;
 terminal WRITE;
 terminal String ID;
@@ -40,8 +40,8 @@ terminal EQ;
 terminal LT;
 /*Declaraciones nuevas*/
 terminal GT;
-terminal GE;
 terminal LE;
+terminal GE;
 terminal NEQ;
 /*-----------*/
 terminal PLUS;
@@ -57,6 +57,8 @@ non terminal NodoBase stmt_seq;
 non terminal NodoBase stmt;
 non terminal NodoBase if_stmt;
 non terminal NodoBase repeat_stmt;
+non terminal NodoBase for_stmt;
+non terminal NodoBase logic_stmt;
 non terminal NodoBase assign_stmt;
 non terminal NodoBase read_stmt;
 non terminal NodoBase write_stmt;
@@ -64,6 +66,7 @@ non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
+
 
 /* Precedencia de operadores */
 precedence left PLUS;
@@ -100,6 +103,9 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
             | repeat_stmt:srep	{: if(modoDepuracion) System.out.println("\t regla 3b"); 
 						RESULT=srep;
 						:}
+			 | for_stmt:srep	{: if(modoDepuracion) System.out.println("\t regla 3b"); 
+						RESULT=srep;
+						:}			
             | assign_stmt:sasi	{: if(modoDepuracion) System.out.println("\t regla 3c"); 
 						RESULT=sasi;
 						:}
@@ -126,11 +132,13 @@ if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END	{: if(modoDepuracion) System.o
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}
-		;
-
-for_stmt	::=	FOR LPAREN assing_stmt:as COMA exp:ex COMA simple_exp:se  RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla 5"); 
-							RESULT = new NodoRepeat(as,ex,se,cuerpo);
+							| REPEAT stmt_seq:cuerpo UNTIL logic_stmt	{: 
+							  if(modoDepuracion) System.out.println("\t regla 5"); 
+							  System.out.println("ESTOY HACIENDO UN AND OR ");
 							:}
+							
+							
+		;
 
 assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
 				/*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
@@ -162,35 +170,37 @@ write_stmt  ::= WRITE exp:ex	{: if(modoDepuracion) System.out.println("\t regla 
 					:}
 		;
 
+/* implementando OR & AND */
+logic_stmt	::= 	exp:exI OR exp:exD {:
+					System.out.println("\t Toma una expresion o otra");
+					RESULT = new NodoOperador(exI,tipoOp.or,exD);
+					:}
+					
+				  | exp:exI AND exp:exD {:
+					System.out.println("\t Toma una expresion y otra expresion");
+					RESULT = new NodoOperador(exI,tipoOp.and,exD);
+					:}
+			;
+
 exp         ::= simple_exp:exI LT simple_exp:exD{:
              		if(modoDepuracion) System.out.println("\t regla 9a"); 
               		   RESULT = new NodoOperacion(exI,tipoOp.menor,exD);
                 :}
                 | simple_exp:exI GT simple_exp:exD{:
-                           
-                  	if(modoDepuracion) System.out.println("\t regla 9a.1"); 
-              		   RESULT = new NodoOperacion(exI,tipoOp.mayor,exD);
+                   System.out.println("\t Esta comparando expresion > expresion"); 
                 :} 
                 | simple_exp:exI LE simple_exp:exD{:
-                      
-                      if(modoDepuracion) System.out.println("\t regla 9a.2"); 
-              		   RESULT = new NodoOperacion(exI,tipoOp.menor_eq,exD);
-                      
+                   System.out.println("\t Esta comparando expresion <= expresion"); 
                 :} 
                 | simple_exp:exI GE simple_exp:exD{:
-                  
-                  if(modoDepuracion) System.out.println("\t regla 9a.3"); 
-              	     RESULT = new NodoOperacion(exI,tipoOp.mayor_eq,exD);
-                  
+                  System.out.println("\t Esta comparando expresion => expresion"); 
                 :} 
 			    |simple_exp:exI EQ simple_exp:exD{:
 					if(modoDepuracion) System.out.println("\t regla 9b"); 
 					   RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
 				 :}
 				|simple_exp:exI NEQ simple_exp:exD{:
-				  if(modoDepuracion) System.out.println("\t regla 9b"); 
-					   RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
-				  
+				   System.out.println("\t Esta comparando expresion != expresion");
 				 :}
 				| simple_exp:ex	{: 
 					if(modoDepuracion) System.out.println("\t regla 9c"); 
