@@ -44,6 +44,7 @@ terminal GE;
 terminal LE;
 terminal NEQ;
 /*-----------*/
+
 terminal PLUS;
 terminal MINUS;
 terminal TIMES;
@@ -60,6 +61,7 @@ non terminal NodoBase repeat_stmt;
 non terminal NodoBase assign_stmt;
 non terminal NodoBase read_stmt;
 non terminal NodoBase write_stmt;
+non terminal NodoBase logic_stmt;
 non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
 non terminal NodoBase term;
@@ -112,25 +114,23 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
             | error	{: if(modoDepuracion) System.out.println("\t regla 3f"); 
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
+				:};
+
+if_stmt     ::= IF logic_stmt:ex THEN stmt_seq:pthen END{: 
+				if(modoDepuracion) System.out.println("\t regla 4a"); 
+				RESULT = new NodoIf(ex,pthen);
 				:}
-            ;
-
-if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END	{: if(modoDepuracion) System.out.println("\t regla 4a"); 
-		RESULT = new NodoIf(ex,pthen);
-		:}
-		| IF exp:ex THEN stmt_seq:pthen ELSE stmt_seq:pelse END	{: if(modoDepuracion) System.out.println("\t regla 4b"); 
-		RESULT = new NodoIf(ex,pthen,pelse);		
-		:}
+				|IF logic_stmt:ex THEN stmt_seq:pthen ELSE stmt_seq:pelse END{: 
+				if(modoDepuracion) System.out.println("\t regla 4b"); 
+				RESULT = new NodoIf(ex,pthen,pelse);		
+				:}
+				
 		;
 
-repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
-							RESULT = new NodoRepeat(cuerpo,prueba);
-							:}
-		;
-
-for_stmt	::=	FOR LPAREN assing_stmt:as COMA exp:ex COMA simple_exp:se  RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla 5"); 
-							RESULT = new NodoRepeat(as,ex,se,cuerpo);
-							:}
+repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL logic_stmt 	
+						    {: if(modoDepuracion) System.out.println("\t regla 5"); 
+							System.out.println("Encontre esta joda"); 
+							:};
 
 assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
 				/*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
@@ -154,13 +154,23 @@ read_stmt   ::= READ ID:variable	{: if(modoDepuracion) System.out.println("\t re
 					RESULT = null;
 					System.out.println("Ocurrio error en cup # 0002");
 					}
-					:}
-		;
+					:};
 
-write_stmt  ::= WRITE exp:ex	{: if(modoDepuracion) System.out.println("\t regla 8"); 
+write_stmt  ::= WRITE exp:ex	
+				    {:if(modoDepuracion) System.out.println("\t regla 8"); 
 				       	RESULT= new NodoEscribir(ex);
+					:};
+
+/* implementando OR & AND */
+logic_stmt	::= 	exp:exI OR logic_stmt:exD {:
+					System.out.println("\t Toma una expresion o otra");
 					:}
-		;
+				  	|exp:exI AND logic_stmt:exD {:
+					System.out.println("\t Toma una expresion y otra expresion");
+					:}
+					|exp:exI{:
+                      System.out.println("\t expresion");
+					:};
 
 exp         ::= simple_exp:exI LT simple_exp:exD{:
              		if(modoDepuracion) System.out.println("\t regla 9a"); 
@@ -198,8 +208,10 @@ exp         ::= simple_exp:exI LT simple_exp:exD{:
 					:}
 		;
 
-simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla 10a"); 
+simple_exp  ::= simple_exp:exI PLUS term:exD	
+                         {: if(modoDepuracion) System.out.println("\t regla 10a"); 
 							RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
+							 System.out.println("voy a sumar"); 
 							:}
 		| simple_exp:exI MINUS term:exD	{: if(modoDepuracion) System.out.println("\t regla 10b"); 
 							RESULT = new NodoOperacion(exI,tipoOp.menos,exD);
@@ -211,6 +223,7 @@ simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.pr
 
 term        ::= term:exI TIMES factor:exD	{: if(modoDepuracion) System.out.println("\t regla 11a"); 
 							RESULT = new NodoOperacion(exI,tipoOp.por,exD);
+							 System.out.println("voy a multiplicar"); 
 							:}
 		| term:exI OVER factor:exD	{: if(modoDepuracion) System.out.println("\t regla 11b"); 
 						RESULT = new NodoOperacion(exI,tipoOp.entre,exD);
@@ -226,7 +239,8 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\
 		| NUM:valor	{: if(modoDepuracion) System.out.println("\t regla 12b"); 
 					System.out.println("Devolvi nodo numero entero");
 					if(valor!=null){
-						RESULT= new NodoValor(valor);					
+						RESULT= new NodoValor(valor);			
+								System.out.println("valor: "+valor);
 					}else{
 						RESULT = null;
 						System.out.println("Ocurrio error en cup # 0005");
