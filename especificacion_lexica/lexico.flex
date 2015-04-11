@@ -31,13 +31,7 @@ import java_cup.runtime.*;
 %line
 %column
 
-<<<<<<< HEAD
 digito		= [0-9]
-=======
-
-
-digito		= -?[0-9] 
->>>>>>> 52e42e1903f7730f411d1fa1da72f5c367ceaaab
 numero		= {digito}+
 letra			= [a-zA-Z]
 identificador	= {letra}+
