@@ -160,20 +160,30 @@ exp         ::= simple_exp:exI LT simple_exp:exD{:
               		   RESULT = new NodoOperacion(exI,tipoOp.menor,exD);
                 :}
                 | simple_exp:exI GT simple_exp:exD{:
-                   System.out.println("\t Esta comparando expresion > expresion"); 
+                           
+                  	if(modoDepuracion) System.out.println("\t regla 9a.1"); 
+              		   RESULT = new NodoOperacion(exI,tipoOp.mayor,exD);
                 :} 
                 | simple_exp:exI LE simple_exp:exD{:
-                   System.out.println("\t Esta comparando expresion <= expresion"); 
+                      
+                      if(modoDepuracion) System.out.println("\t regla 9a.2"); 
+              		   RESULT = new NodoOperacion(exI,tipoOp.menor_eq,exD);
+                      
                 :} 
                 | simple_exp:exI GE simple_exp:exD{:
-                  System.out.println("\t Esta comparando expresion => expresion"); 
+                  
+                  if(modoDepuracion) System.out.println("\t regla 9a.3"); 
+              	     RESULT = new NodoOperacion(exI,tipoOp.mayor_eq,exD);
+                  
                 :} 
 			    |simple_exp:exI EQ simple_exp:exD{:
 					if(modoDepuracion) System.out.println("\t regla 9b"); 
 					   RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
 				 :}
 				|simple_exp:exI NEQ simple_exp:exD{:
-				   System.out.println("\t Esta comparando expresion != expresion");
+				  if(modoDepuracion) System.out.println("\t regla 9b"); 
+					   RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
+				  
 				 :}
 				| simple_exp:ex	{: 
 					if(modoDepuracion) System.out.println("\t regla 9c"); 
