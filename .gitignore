@@ -2,3 +2,4 @@ bin
 /Eclipse a netbeans/nbproject/private/
 /Eclipse a netbeans/build/
 /Eclipse a netbeans/dist/
+*.properties
