@@ -1,5 +1,5 @@
-package compilador;
-
+ package compilador;
+ 
 import java_cup.runtime.*;
 import ast.*;
 
