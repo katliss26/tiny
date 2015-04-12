@@ -31,14 +31,8 @@ import java_cup.runtime.*;
 %line
 %column
 
-<<<<<<< HEAD
 digito		= [0-9]
-=======
-
-
-digito		= -?[0-9] 
->>>>>>> 52e42e1903f7730f411d1fa1da72f5c367ceaaab
-numero		= {digito}+
+numero		= -?{digito}+
 letra			= [a-zA-Z]
 identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
@@ -59,6 +53,9 @@ espacio		= [ \t]+
 "and"           {   if(debug) System.out.println("token AND");
 			return sf.newSymbol("AND",sym.AND);
 			}
+"function"      {   if(debug) System.out.println("token FUNCTION");
+			return sf.newSymbol("FUNCTION",sym.FUNCTION);
+			}			
 "or"            {   if(debug) System.out.println("token OR");
 			return sf.newSymbol("OR",sym.OR);
 			}			
