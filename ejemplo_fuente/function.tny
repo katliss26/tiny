@@ -1,9 +1,39 @@
 bool function nueva (int ala, bool vc) 
 begin
-			
+	for (i:=0;x<10 ;x:=x+2 ) 
+		if 0 < x then 
+		  fact := 1;
+		  repeat
+		    fact := fact * x;
+		    x := x - 1
+		  until x = 0;
+		  write fact  
+		end
+	end
  return x;
 end
-
+{ input an integer }
+void function vieja () 
 begin
-write x
+	 read x; 
+	if 0 < x then 
+	  fact := 1;
+	  repeat
+	    fact := fact * x;
+	    x := x - 1
+	  until x = 0;
+	  write fact  { output factorial of x }
+	end
+end
+{ don't compute if x <= 0 }
+begin
+	read x; 
+	if 0 < x then 
+	  fact := 1;
+	  repeat
+	    fact := fact * x;
+	    x := x - 1
+	  until x = 0;
+	  write fact 
+	end
 end
