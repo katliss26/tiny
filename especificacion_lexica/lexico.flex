@@ -106,8 +106,16 @@ espacio		= [ \t]+
 			}
 "!="        	{	if(debug) System.out.println("token NEQ");
 			return sf.newSymbol("NEQ",sym.NEQ);
-			}									
-"+"             {	if(debug) System.out.println("token PLUS");
+			}	
+"["  		{
+            if(debug) System.out.println("token CORCHETE QUE ABRE");
+			return sf.newSymbol("LCORCH",sym.LCORCH);
+			}
+"]" 		{
+	        if(debug) System.out.println("token CORCHETE QUE CIERRA");
+			return sf.newSymbol("RCORCH",sym.RCORCH);
+			}
+"+"         { if(debug) System.out.println("token PLUS");
 			return sf.newSymbol("PLUS",sym.PLUS);
 			}
 "-"              {	if(debug) System.out.println("token MINUS");

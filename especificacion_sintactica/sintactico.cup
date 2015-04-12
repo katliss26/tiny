@@ -30,6 +30,8 @@ terminal END;
 terminal REPEAT;
 terminal UNTIL;
 terminal FOR;
+terminal LCORCH;
+terminal RCORCH;
 terminal RETURN;
 terminal READ;
 terminal WRITE;
@@ -44,7 +46,6 @@ terminal GE;
 terminal LE;
 terminal NEQ;
 /*-----------*/
-
 terminal PLUS;
 terminal MINUS;
 terminal TIMES;
@@ -66,11 +67,14 @@ non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
-
+non terminal NodoBase vector_stmt;
 /* Precedencia de operadores */
+precedence left AND;
+precedence left OR;
 precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
+precedence left OVER;
 
 
 /* REGLAS GRAMATICALES */
@@ -127,9 +131,9 @@ if_stmt     ::= IF logic_stmt:ex THEN stmt_seq:pthen END{:
 				
 		;
 
-repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL logic_stmt 	
-						    {: if(modoDepuracion) System.out.println("\t regla 5"); 
-							System.out.println("Encontre esta joda"); 
+repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL logic_stmt:prueba	
+						    {: if(modoDepuracion) System.out.println("\t regla 5");			      
+                                   RESULT=new NodoRepeat(cuerpo,prueba);
 							:};
 
 assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
@@ -163,13 +167,15 @@ write_stmt  ::= WRITE exp:ex
 
 /* implementando OR & AND */
 logic_stmt	::= 	exp:exI OR logic_stmt:exD {:
-					System.out.println("\t Toma una expresion o otra");
+	                if(modoDepuracion) System.out.println("\t regla 13a"); 
+					RESULT=new NodoOperacion(exI,tipoOp.or,exD);
 					:}
 				  	|exp:exI AND logic_stmt:exD {:
-					System.out.println("\t Toma una expresion y otra expresion");
+					 if(modoDepuracion) System.out.println("\t regla 13b");
+					 RESULT=new NodoOperacion(exI,tipoOp.and,exD); 
 					:}
-					|exp:exI{:
-                      System.out.println("\t expresion");
+					|exp:ex{:
+                      RESULT=ex;
 					:};
 
 exp         ::= simple_exp:exI LT simple_exp:exD{:
@@ -205,37 +211,36 @@ exp         ::= simple_exp:exI LT simple_exp:exD{:
 				| simple_exp:ex	{: 
 					if(modoDepuracion) System.out.println("\t regla 9c"); 
 					RESULT = ex;
-					:}
-		;
-
-simple_exp  ::= simple_exp:exI PLUS term:exD	
-                         {: if(modoDepuracion) System.out.println("\t regla 10a"); 
-							RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
-							 System.out.println("voy a sumar"); 
-							:}
-		| simple_exp:exI MINUS term:exD	{: if(modoDepuracion) System.out.println("\t regla 10b"); 
-							RESULT = new NodoOperacion(exI,tipoOp.menos,exD);
-							:}
-		| term:ex	{: if(modoDepuracion) System.out.println("\t regla 10c"); 
-				RESULT=ex;
 				:}
 		;
 
-term        ::= term:exI TIMES factor:exD	{: if(modoDepuracion) System.out.println("\t regla 11a"); 
-							RESULT = new NodoOperacion(exI,tipoOp.por,exD);
-							 System.out.println("voy a multiplicar"); 
-							:}
-		| term:exI OVER factor:exD	{: if(modoDepuracion) System.out.println("\t regla 11b"); 
-						RESULT = new NodoOperacion(exI,tipoOp.entre,exD);
-						:}
-		| factor:ex	{: if(modoDepuracion) System.out.println("\t regla 11c"); 
-					RESULT=ex;
-					:}
+simple_exp  ::= simple_exp:exI PLUS term:exD	
+                {: if(modoDepuracion) System.out.println("\t regla 10a"); 
+				RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
+			    :}
+				|simple_exp:exI MINUS term:exD	{: if(modoDepuracion) System.out.println("\t regla 10b"); 
+		 		RESULT = new NodoOperacion(exI,tipoOp.menos,exD);
+				:}
+				|term:ex {: if(modoDepuracion) System.out.println("\t regla 10c"); 
+				RESULT=ex;
+				:}
+		;
+term  ::= term:exI TIMES factor:exD{:
+            if(modoDepuracion) System.out.println("\t regla 11a"); 
+			   RESULT = new NodoOperacion(exI,tipoOp.por,exD);
+			  :}
+			   |term:exI OVER factor:exD{: if(modoDepuracion) System.out.println("\t regla 11b"); 
+			   RESULT = new NodoOperacion(exI,tipoOp.entre,exD);
+			   :}
+			   |factor:ex	{: if(modoDepuracion) System.out.println("\t regla 11c"); 
+			   RESULT=ex;
+		:}
 		;
 
-factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla 12a"); 
-							RESULT = ex;
-							:}
+factor      ::= LPAREN exp:ex RPAREN{: 
+            if(modoDepuracion) System.out.println("\t regla 12a"); 
+			RESULT = ex;
+			:}
 		| NUM:valor	{: if(modoDepuracion) System.out.println("\t regla 12b"); 
 					System.out.println("Devolvi nodo numero entero");
 					if(valor!=null){
@@ -255,8 +260,18 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\
 						System.out.println("Ocurrio error en cup # 0005");
 					}
 					:}
+
+
+		|vector_stmt{:
+             System.out.println("ENCONTRO UN VECTOR");          
+		:} 
+					
 		| error	{: if(modoDepuracion) System.out.println("\t regla 12d"); 
 				System.out.println("Ocurrio error en cup # 0003");
 				RESULT=null;
 				:}
 		;
+vector_stmt  ::= ID LCORCH simple_exp RCORCH{:
+					System.out.println("HEE DECLARE UN VECTOR");
+:}
+;
