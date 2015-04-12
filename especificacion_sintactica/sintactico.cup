@@ -67,7 +67,7 @@ non terminal NodoBase factor;
 
 non terminal NodoBase dec;
 non terminal NodoBase type_stmt;
-
+non terminal NodoBase numNeg;
 /* Precedencia de operadores */
 precedence left PLUS;
 precedence left MINUS;
@@ -79,25 +79,9 @@ program     ::= stmt_seq:s	{: if(modoDepuracion) System.out.println("\t regla 1"
 					ast = s;
 					:}
 		;
-/*punto y coma*/
-stmt_seq    ::= stmt_seq:ini SEMI stmt:sent	{: if(modoDepuracion) System.out.println("\t regla 2a"); 
-						NodoBase hijoActual = ini;
-						if(hijoActual !=null){
-							while(hijoActual.TieneHermano()){
-								hijoActual = hijoActual.getHermanoDerecha();
-							}
-							hijoActual.setHermanoDerecha(sent);
-							RESULT=ini;
-						}else{
-							RESULT=sent;
-						}
-						:}
-            | stmt:sent	{: if(modoDepuracion) System.out.println("\t regla 2b"); 
-				RESULT=sent;				
-				:}
-		;
 
-stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3a"); 
+
+stmt_seq        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3a"); 
 					RESULT=sif;
 					:}
             | repeat_stmt:srep	{: if(modoDepuracion) System.out.println("\t regla 3b"); 
@@ -129,17 +113,17 @@ if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END	{: if(modoDepuracion) System.o
 		:}
 		;
 
-repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
+repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba SEMI {: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}
 		;
 
 
-assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
+assign_stmt ::= ID:variable {: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
 				/*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
 				String nombre = variable.getName();*/
 				:}
-			ASSIGN exp:ex	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
+			ASSIGN exp:ex	SEMI	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
 					if(variable!=null)
 					RESULT = new NodoAsignacion(variable.toString(),ex);
 					else{
@@ -149,7 +133,7 @@ assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 
 					:}
 		;
 
-read_stmt   ::= READ ID:variable	{: if(modoDepuracion) System.out.println("\t regla 7"); 
+read_stmt   ::= READ ID:variable SEMI	{: if(modoDepuracion) System.out.println("\t regla 7"); 
 					System.out.println("Leyendo Variable");
 					if(variable!=null)
 					RESULT = new NodoLeer(variable.toString());
@@ -160,16 +144,16 @@ read_stmt   ::= READ ID:variable	{: if(modoDepuracion) System.out.println("\t re
 					:}
 		;
 
-write_stmt  ::= WRITE exp:ex	{: if(modoDepuracion) System.out.println("\t regla 8"); 
+write_stmt  ::= WRITE exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t regla 8"); 
 				       	RESULT= new NodoEscribir(ex);
 					:}
 		;
 
-type_stmt  ::= INT dec:di	{: if(modoDepuracion) System.out.println("\t regla 8x"); 
+type_stmt  ::= INT dec:di SEMI {: if(modoDepuracion) System.out.println("\t regla 8x"); 
 				       	System.out.println("\t tipo INT");
 				       	/*RESULT= new NodoEscribir(dec);*/
 				:}
-				| BOOL dec:db	{: if(modoDepuracion) System.out.println("\t regla 8x"); 
+				| BOOL dec:db SEMI {: if(modoDepuracion) System.out.println("\t regla 8x"); 
 				       	System.out.println("\t tipo BOOL");
 				       	/*RESULT= new NodoEscribir(dc);*/
 					:}		
@@ -255,6 +239,10 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\
 						System.out.println("Ocurrio error en cup # 0005");
 					}
 					:}
+		| numNeg {: if(modoDepuracion) System.out.println("\t regla 12a"); 
+							System.out.println("numNeg");
+							/*RESULT = ex;*/
+							:}
 		| error	{: if(modoDepuracion) System.out.println("\t regla 12d"); 
 				System.out.println("Ocurrio error en cup # 0003");
 				RESULT=null;
@@ -270,4 +258,9 @@ dec        ::= ID COMA dec:exD	{: if(modoDepuracion) System.out.println("\t regl
 	        /*RESULT=ex;*/
 	        System.out.println("\t ID"); 
 	        :}
+		;
+numNeg     	::= MINUS factor:exD	{: if(modoDepuracion) System.out.println("\t regla 11a"); 
+							System.out.println("\t negativo"); 
+							/*RESULT = new NodoOperacion(exI,tipoOp.por,exD);*/
+							:}
 		;
