@@ -1,2 +1,2 @@
-java -jar java-cup-11a.jar Gramatica.cup
+java -jar java-cup-11a.jar sintactico.cup
 pause
