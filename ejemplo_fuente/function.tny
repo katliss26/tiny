@@ -3,3 +3,7 @@ begin
 			
  return x;
 end
+
+begin
+write x
+end

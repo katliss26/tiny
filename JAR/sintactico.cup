@@ -21,9 +21,7 @@ terminal VOID;
 terminal INT;
 terminal BEGIN;
 terminal AND;
-terminal FUNCTION;
 terminal OR;
-terminal RETURN;
 terminal COMA;
 terminal IF;
 terminal THEN;
@@ -32,6 +30,7 @@ terminal END;
 terminal REPEAT;
 terminal UNTIL;
 terminal FOR;
+terminal RETURN;
 terminal READ;
 terminal WRITE;
 terminal String ID;
@@ -54,17 +53,10 @@ terminal RPAREN;
 terminal SEMI;
 /* Simbolos No Terminales */
 non terminal program;
-non terminal NodoBase start_block;
-non terminal NodoBase start_principal;
 non terminal NodoBase stmt_seq;
-non terminal NodoBase func_stmt;
-non terminal NodoBase arg_stmt;
-non terminal NodoBase cont_void;
-non terminal NodoBase cont_type;
 non terminal NodoBase stmt;
 non terminal NodoBase if_stmt;
 non terminal NodoBase repeat_stmt;
-non terminal NodoBase for_stmt;
 non terminal NodoBase assign_stmt;
 non terminal NodoBase read_stmt;
 non terminal NodoBase write_stmt;
@@ -80,72 +72,8 @@ precedence left TIMES;
 
 
 /* REGLAS GRAMATICALES */
-
-program     ::=  start_block:s	{:System.out.println("\t regla 1"); 
+program     ::=  BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
 					ast = s;
-					:}
-			;
-start_block	::=  func_stmt:s start_block 
-				{:System.out.println("\t Una o mas Funciones");
-				:}
-				| start_principal 
-				{:System.out.println("\t ir a el bloque principal");
-				:}			
-			;
-start_principal ::= BEGIN stmt_seq:s END	
-				{: System.out.println("\t Bloque principal");
-				:}
-			;	
-func_stmt 	::= VOID FUNCTION ID LPAREN RPAREN 
-				cont_void
-				{: if(modoDepuracion) System.out.println("\t funcion VOID sin parametros"); 
-					:}
-				|BOOL FUNCTION ID LPAREN RPAREN
-				cont_type
-				{: if(modoDepuracion) System.out.println("\t funcion BOOL sin parametros"); 
-					:}
-				|INT FUNCTION ID LPAREN RPAREN 
-				cont_type
-				{: if(modoDepuracion) System.out.println("\t funcion INT sin parametros"); 
-					:}
-				|VOID FUNCTION ID LPAREN arg_stmt RPAREN 
-				cont_void
-				{: if(modoDepuracion) System.out.println("\t funcion VOID con parametros"); 
-					:}
-				|BOOL FUNCTION ID LPAREN arg_stmt RPAREN 
-				cont_type
-				{: if(modoDepuracion) System.out.println("\t funcion BOOL con parametros"); 
-					:}
-				|INT FUNCTION ID LPAREN arg_stmt RPAREN 
-				cont_type
-				{: if(modoDepuracion) System.out.println("\t funcion INT con parametros"); 
-					:}
-		;
-cont_void	::= BEGIN 
-					stmt_seq
-				END
-				|BEGIN 
-				END
-			;
-cont_type	::= BEGIN 
-					stmt_seq
-					RETURN simple_exp SEMI
-				END
-				|BEGIN 
-					RETURN simple_exp SEMI
-				END
-			;			
-arg_stmt	::= BOOL ID COMA arg_stmt 
-				{: if(modoDepuracion) System.out.println("\t Argumento 1"); 
-					:}
-				| INT ID COMA arg_stmt
-				{: if(modoDepuracion) System.out.println("\t Argumento 2"); 
-					:}
-				| INT ID
-				{: if(modoDepuracion) System.out.println("\t Argumento 3"); 
-					:}
-				| BOOL ID
-				{: if(modoDepuracion) System.out.println("\t Argumento 4"); 
 					:}
 		;
 
@@ -171,9 +99,6 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 					:}
             | repeat_stmt:srep	{: if(modoDepuracion) System.out.println("\t regla 3b"); 
 						RESULT=srep;
-						:}
-			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3b.1"); 
-						RESULT=sfor;
 						:}
             | assign_stmt:sasi	{: if(modoDepuracion) System.out.println("\t regla 3c"); 
 						RESULT=sasi;
@@ -202,14 +127,6 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) Sy
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}
 		;
-
-for_stmt	::=	FOR LPAREN assign_stmt:as SEMI exp:ex SEMI assign_stmt:se  RPAREN
-					stmt_seq:cont
-				END
-				{: if(modoDepuracion) System.out.println("\t regla FOR"); 
-							RESULT = new NodoFor(as,ex,se,cont);
-							:}
-							;
 
 assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
 				/*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
