@@ -32,7 +32,7 @@ import java_cup.runtime.*;
 %column
 
 digito		= [0-9]
-numero		= {digito}+
+numero		= -?{digito}+
 letra			= [a-zA-Z]
 identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
@@ -53,6 +53,9 @@ espacio		= [ \t]+
 "and"           {   if(debug) System.out.println("token AND");
 			return sf.newSymbol("AND",sym.AND);
 			}
+"function"      {   if(debug) System.out.println("token FUNCTION");
+			return sf.newSymbol("FUNCTION",sym.FUNCTION);
+			}			
 "or"            {   if(debug) System.out.println("token OR");
 			return sf.newSymbol("OR",sym.OR);
 			}			
@@ -74,6 +77,12 @@ espacio		= [ \t]+
 "until"         {	if(debug) System.out.println("token UNTIL");
 			return sf.newSymbol("UNTIL",sym.UNTIL);
 			}
+"true"			{	if(debug) System.out.println("token TRUE");
+			return sf.newSymbol("TRUE",sym.TRUE);
+			}
+"false"			{	if(debug) System.out.println("token FALSE");
+			return sf.newSymbol("TRUE",sym.FALSE);
+			}			
 "for"      		{	if(debug) System.out.println("token FOR");
 			return sf.newSymbol("FOR",sym.FOR);
 			}
