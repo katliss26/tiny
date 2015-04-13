@@ -30,5 +30,7 @@ public class NodoBase {
 	public boolean TieneHermano() {
 		return (HermanoDerecha!=null);
 	}
-	
+	public boolean NoTieneHermano() {
+		return (HermanoDerecha==null);
+	}
 }

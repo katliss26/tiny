@@ -97,6 +97,7 @@ precedence left OVER;
 
 program     ::=  start_block:s	{:System.out.println("\t regla 1"); 
 					ast = s;
+
 					:}
 			;
 start_block	::=  func_stmt:fc start_block 
@@ -326,10 +327,7 @@ arg_assign_type	::=  arg_assign_type COMA exp
 					{: if(modoDepuracion) System.out.println("\t Argumento 2"); 
 					:}
 					;
-assign_stmt ::= ID:variable 	/*{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
-				lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
-				String nombre = variable.getName();
-				:}*/
+assign_stmt ::= ID:variable
 				ASSIGN exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
 					if(variable!=null)
 					RESULT = new NodoAsignacion(variable.toString(),ex);
@@ -363,11 +361,11 @@ write_stmt  ::= WRITE exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t r
 /* implementando OR & AND */
 logic_stmt	::= 	exp:exI OR logic_stmt:exD {:
 	                if(modoDepuracion) System.out.println("\t regla 13a"); 
-					/*RESULT=new NodoOperacion(exI,tipoOp.or,exD);*/
+					RESULT=new NodoOperacion(exI,tipoOp.or,exD);
 					:}
 				  	|exp:exI AND logic_stmt:exD {:
 					 if(modoDepuracion) System.out.println("\t regla 13b");
-					 /*RESULT=new NodoOperacion(exI,tipoOp.and,exD); */
+					 RESULT=new NodoOperacion(exI,tipoOp.and,exD); 
 					:}
 					|exp:ex{:
                       RESULT=ex;
@@ -375,35 +373,35 @@ logic_stmt	::= 	exp:exI OR logic_stmt:exD {:
 		;
 type_stmt  ::= INT dec:di SEMI {: if(modoDepuracion) System.out.println("\t regla 8x"); 
 				       	System.out.println("\t tipo INT");
-				       	/*CrearNodo?*/
-				       	/*RESULT= new NodoEscribir(dec);*/
+				       	RESULT=di;
 				:}
 				| BOOL dec:db SEMI {: if(modoDepuracion) System.out.println("\t regla 8x"); 
 				       	System.out.println("\t tipo BOOL");
-				       	/*CrearNodo?*/
-				       	/*RESULT= new NodoEscribir(dc);*/
+				         RESULT=db;
 					:}		
 		;
 
-dec        ::= ID:var COMA dec:exD	{: if(modoDepuracion) System.out.println("\t regla 11a"); 
+dec        ::= ID:var COMA dec:ex	{: if(modoDepuracion) System.out.println("\t regla 11a"); 
 							System.out.println("\t dec"); 
 							/*CrearNodo?*/
-							/*RESULT = new NodoOperacion(exI,tipoOp.por,exD);*/
-							:}
+							 
+                                                
+			 :}
             | ID:var	
             {: if(modoDepuracion) System.out.println("\t regla 11c"); 
             /*CrearNodo?*/
 	        /*RESULT=ex;*/
 	        System.out.println("\t ID"); 
 	        :}
-	        | ID LCORCH simple_exp RCORCH COMA dec:exD
+	        | ID:var LCORCH simple_exp:ex RCORCH COMA dec:exD
             {: if(modoDepuracion) System.out.println("\t regla 11c"); 
-	        /*RESULT=ex;*/
+          		  RESULT = new NodoVector(var.toString(),ex,exD); 
+	   
 	        System.out.println("\t ID"); 
 	        :}
-	        | ID LCORCH simple_exp RCORCH
+	        | ID:nombre LCORCH simple_exp:ex RCORCH
             {: if(modoDepuracion) System.out.println("\t regla 11c"); 
-	        /*RESULT=ex;*/
+	             RESULT = new NodoVector(nombre.toString(),ex); 
 	        System.out.println("\t ID"); 
 	        :}
 		;

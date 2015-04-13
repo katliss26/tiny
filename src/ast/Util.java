@@ -22,7 +22,11 @@ public class Util {
 
 		    else if (raiz instanceof  NodoEscribir)
 		    	System.out.println("Escribir");
+		    else if (raiz instanceof  NodoVector)
+		    	System.out.println("Vector : "+((NodoVector)raiz).getIdentificador()+"[ ]");
 		    
+                    
+                    
 		    else if (raiz instanceof NodoOperacion
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
@@ -43,6 +47,7 @@ public class Util {
 		    		imprimirAST(((NodoIf)raiz).getParteElse());
 		    	}
 		    }
+                   
 		    else if (raiz instanceof  NodoRepeat){
 		    	printSpaces();
 		    	System.out.println("**Cuerpo REPEAT**");
@@ -63,6 +68,13 @@ public class Util {
 		    	System.out.println("**Expr Derecha Operacion**");		    	
 		    	imprimirAST(((NodoOperacion)raiz).getOpDerecho());
 		    }
+                    else if (raiz instanceof  NodoVector){
+                    
+		    	imprimirAST(((NodoVector)raiz).getExpresion());                        
+                        
+                    }
+                    
+                    
 		    raiz = raiz.getHermanoDerecha();
 		  }
 		  sangria-=2;
