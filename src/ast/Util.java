@@ -27,6 +27,9 @@ public class Util {
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
 		    	imprimirNodo(raiz);
+                    else if (raiz instanceof NodoTipoOperacion) /// NODO TIPO OPERACION BOOLEAN,INTEGER
+                        System.out.println("tipoOperacion");
+                        
 		    else System.out.println("Tipo de nodo desconocido");;
 		    
 		    /* Hago el recorrido recursivo */
@@ -63,6 +66,14 @@ public class Util {
 		    	System.out.println("**Expr Derecha Operacion**");		    	
 		    	imprimirAST(((NodoOperacion)raiz).getOpDerecho());
 		    }
+                    else if (raiz instanceof NodoTipoOperacion){ // tome valores hijoiz y herextremaderecha
+                        printSpaces();
+                        System.out.println("**impresion hijo izquierda**");
+                        imprimirAST(((NodoTipoOperacion)raiz).getHijoIzquierda());
+                        printSpaces();
+                        System.out.println("**impresion hermano extrema derecha**");
+                        imprimirAST(((NodoTipoOperacion)raiz).getHermanoExtremaDerecha());
+                    }
 		    raiz = raiz.getHermanoDerecha();
 		  }
 		  sangria-=2;
@@ -89,20 +100,8 @@ static void imprimirNodo( NodoBase raiz )
 	
 	if(	raiz instanceof NodoOperacion ){
 		tipoOp sel=((NodoOperacion) raiz).getOperacion();
-		if(sel==tipoOp.or)
-			System.out.println("or");
-                if(sel==tipoOp.and)
-			System.out.println("and");
-                if(sel==tipoOp.menor)
-			System.out.println("<");
-                if(sel==tipoOp.mayor)
-			System.out.println(">");
-                if(sel==tipoOp.mayor_eq)
-			System.out.println(">=");
-                if(sel==tipoOp.menor_eq)
-			System.out.println("<=");
-                if(sel==tipoOp.diferente)
-			System.out.println("!=");   
+		if(sel==tipoOp.menor)
+			System.out.println("<"); 
 		if(sel==tipoOp.igual)
 			System.out.println("=");
 		if(sel==tipoOp.mas)
@@ -122,7 +121,11 @@ static void imprimirNodo( NodoBase raiz )
 	if(	raiz instanceof NodoIdentificador ){
 		System.out.println("ID, nombre= "+ ((NodoIdentificador)raiz).getNombre());
 	}
-
+        
+//        if(     raiz instanceof NodoTipoOperacion){
+//                System.out.println("OP, tipoOperacion= "+((NodoTipoOperacion)raiz).getHermanoExtremaDerecha());
+//        }
+        
 }
 
 
