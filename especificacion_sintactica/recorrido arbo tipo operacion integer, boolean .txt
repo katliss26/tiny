@@ -1,0 +1,11 @@
+NodoBase hijoActual = ini;
+	if(hijoActual !=null){
+		while(hijoActual.TieneHermano()){
+			hijoActual = hijoActual.getHermanoExtremaDerecha();
+		}
+			hijoActual.setHermanoExtremaDerecha(sent);
+			RESULT=ini;
+		}else{
+			RESULT=sent;
+		}
+	:}
