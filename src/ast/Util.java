@@ -13,7 +13,6 @@ public class Util {
 		    	System.out.println("If");
 		    else if (raiz instanceof  NodoRepeat)
 		    	System.out.println("Repeat");
-		    
 		    else if (raiz instanceof  NodoAsignacion)
 		    	System.out.println("Asignacion a: "+((NodoAsignacion)raiz).getIdentificador());
 
@@ -22,9 +21,32 @@ public class Util {
 
 		    else if (raiz instanceof  NodoEscribir)
 		    	System.out.println("Escribir");
-		    else if (raiz instanceof  NodoVector)
+		    else if (raiz instanceof  NodoVector){
 		    	System.out.println("Vector : "+((NodoVector)raiz).getIdentificador()+"[ ]");
-		    
+                        System.out.println("Valor: "+((NodoVector)raiz).getValor());
+                    }
+
+		    else if (raiz instanceof  NodoAsignacion_Vector){
+                        System.out.println(":=");
+                        System.out.println("**Expr Izquierda Operacion**");
+                        System.out.println("Vector : "+((NodoAsignacion_Vector)raiz).getV().getIdentificador()+"[ ]");
+                        System.out.println("Valor: "+((NodoAsignacion_Vector)raiz).getV().getValor());
+                        System.out.println("**Expr Derecha Operacion**");
+                        imprimirAST(((NodoAsignacion_Vector)raiz).getExpresion());
+                    }
+                     else if(raiz instanceof NodoFor){
+                        printSpaces();
+		    	System.out.println("**Inicio For**");
+		    	imprimirAST(((NodoFor)raiz).getIncio());
+		    	printSpaces();
+		    	System.out.println("**Comparacion For**");
+		    	imprimirAST(((NodoFor)raiz).getCompara());
+		    	System.out.println("**IncrementeoDecremento For**");
+		    	imprimirAST(((NodoFor)raiz).getAutomento());
+		    	System.out.println("**Cuerpo Sentencias**");
+		    	imprimirAST(((NodoFor)raiz).getSentencias());
+                    }
+                    
                     
                     
 		    else if (raiz instanceof NodoOperacion
@@ -68,11 +90,8 @@ public class Util {
 		    	System.out.println("**Expr Derecha Operacion**");		    	
 		    	imprimirAST(((NodoOperacion)raiz).getOpDerecho());
 		    }
-                    else if (raiz instanceof  NodoVector){
-                    
-		    	imprimirAST(((NodoVector)raiz).getExpresion());                        
-                        
-                    }
+                 
+                
                     
                     
 		    raiz = raiz.getHermanoDerecha();
