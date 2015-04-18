@@ -1,7 +1,16 @@
 bin
+<<<<<<< HEAD
 /Eclipse a netbeans/nbproject/private/
 /Eclipse a netbeans/build/
 /Eclipse a netbeans/dist/
 *.properties
 *.java~
 GRAMATICA.txt
+=======
+*.properties
+/Eclipse a netbeans/dist/
+*.class
+*.xml
+GRAMATICA.txt
+*.java~
+>>>>>>> 9ffbdb3569c8bdba6165506f7730643e1bc7e0a2
