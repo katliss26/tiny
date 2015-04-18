@@ -2,58 +2,57 @@ package ast;
 
 public class NodoFor extends NodoBase {
 
-	private NodoBase as;
-	private NodoBase ex;
-	private NodoBase se;
-	private NodoBase cuerpo;
-	
-	public NodoFor(NodoBase as,NodoBase ex,NodoBase se,NodoBase cuerpo) {
-		super();
-		this.as = as;
-		this.ex = ex;
-		this.se = se;
-		this.cuerpo = cuerpo;
-	}
-	
-	public NodoFor() {
-		super();
-		this.cuerpo = null;
-		this.as = null;
-		this.ex = null;
-		this.se = null;
-	}
+    private NodoBase inicio;
+    private NodoBase compara;
+    private NodoBase aumento;
+    private NodoBase sentencias;
 
-	public NodoBase getAs() {
-		return as;
-	}
+    public NodoFor(NodoBase inicio, NodoBase compara, NodoBase aumento, NodoBase sentencia) {
+        super();
+        this.inicio = inicio;
+        this.compara = compara;
+        this.aumento = aumento;
+        this.sentencias = sentencia;
+    }
 
-	public void setAs(NodoBase as) {
-		this.as = as;
-	}
+    public NodoFor() {
+        super();
+        this.sentencias = null;
+        this.inicio = null;
+        this.compara = null;
+        this.aumento = null;
+    }
 
-	public NodoBase getEx() {
-		return ex;
-	}
+    public NodoBase getInicio() {
+        return inicio;
+    }
 
-	public void setEx(NodoBase ex) {
-		this.ex = ex;
-	}
+    public NodoBase getCompara() {
+        return compara;
+    }
 
-	public NodoBase getSe() {
-		return se;
-	}
+    public NodoBase getAumento() {
+        return aumento;
+    }
 
-	public void setSe(NodoBase se) {
-		this.se = se;
-	}
+    public NodoBase getSentencias() {
+        return sentencias;
+    }
 
-	public NodoBase getCuerpo() {
-		return cuerpo;
-	}
+    public void setInicio(NodoBase inicio) {
+        this.inicio = inicio;
+    }
 
-	public void setCuerpo(NodoBase cuerpo) {
-		this.cuerpo = cuerpo;
-	}
+    public void setCompara(NodoBase compara) {
+        this.compara = compara;
+    }
 
+    public void setAumento(NodoBase aumento) {
+        this.aumento = aumento;
+    }
+
+    public void setSentencias(NodoBase sentencias) {
+        this.sentencias = sentencias;
+    }
 
 }

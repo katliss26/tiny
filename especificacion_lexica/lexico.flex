@@ -52,10 +52,7 @@ espacio		= [ \t]+
 			}
 "and"           {   if(debug) System.out.println("token AND");
 			return sf.newSymbol("AND",sym.AND);
-			}
-"function"      {   if(debug) System.out.println("token FUNCTION");
-			return sf.newSymbol("FUNCTION",sym.FUNCTION);
-			}			
+			}		
 "or"            {   if(debug) System.out.println("token OR");
 			return sf.newSymbol("OR",sym.OR);
 			}			
@@ -109,6 +106,12 @@ espacio		= [ \t]+
 			}
 "!="        	{	if(debug) System.out.println("token NEQ");
 			return sf.newSymbol("NEQ",sym.NEQ);
+			}
+"["				{	if(debug) System.out.println("token CORCHETE QUE ABRE");
+			return sf.newSymbol("NEQ",sym.LCORCH);
+			}
+"]"				{	if(debug) System.out.println("token CORCHETE QUE CIERRA");
+			return sf.newSymbol("NEQ",sym.RCORCH);
 			}									
 "+"             {	if(debug) System.out.println("token PLUS");
 			return sf.newSymbol("PLUS",sym.PLUS);

@@ -1,1 +1,7 @@
-write 1+2*3
+void id()
+begin
+	bool t,a,s;
+end
+begin
+	int t,a,s;
+end
