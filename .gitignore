@@ -3,3 +3,5 @@ bin
 /Eclipse a netbeans/build/
 /Eclipse a netbeans/dist/
 *.properties
+*.java~
+GRAMATICA.txt
