@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-for(i:=0;10<i;i:=i+2)
-	read x;
-	if 10 < x then
-	   write 1
-	else
-	   write 2
-	 end
-=======
 for(i:=0 ; 10<i ; i:=i+2)
 read x;
 if 10 < x then
@@ -14,5 +5,4 @@ if 10 < x then
 else
    write 2
  end
->>>>>>> 9ffbdb3569c8bdba6165506f7730643e1bc7e0a2
 end

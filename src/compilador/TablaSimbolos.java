@@ -20,14 +20,6 @@ import ast.NodoDeclaracion;
 
 public class TablaSimbolos {
 
-<<<<<<< HEAD
-	public void cargarTabla(NodoBase raiz){
-		while (raiz != null) {
-	    if (raiz instanceof NodoIdentificador){
-	    	InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),-1);
-	    	//TODO: Anadir el numero de linea y localidad de memoria correcta
-	    }
-=======
     private HashMap<String, HashMap<String, RegistroSimbolo>> tabla;
     private HashMap<String, RegistroSimbolo> ambito;
     private String tipo;
@@ -130,7 +122,6 @@ public class TablaSimbolos {
             //System.out.println("Consegui Key: " + s + " con direccion: " + BuscarSimbolo(s).getDireccionMemoria());
         }
     }
->>>>>>> 9ffbdb3569c8bdba6165506f7730643e1bc7e0a2
 
     public int getDireccion(String Clave) {
         return BuscarSimbolo(Clave).getDireccionMemoria();

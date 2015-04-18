@@ -2,59 +2,6 @@ package ast;
 
 public class NodoFor extends NodoBase {
 
-<<<<<<< HEAD
-	private NodoBase as;
-	private NodoBase ex;
-	private NodoBase se;
-	private NodoBase cuerpo;
-	
-	public NodoFor(NodoBase as,NodoBase ex,NodoBase se, NodoBase cuerpo) {
-		super();
-                this.cuerpo = cuerpo;
-		this.as = as;
-		this.ex = ex;
-		this.se = se;
-	}
-	
-	public NodoFor() {
-		super();
-		this.as = null;
-		this.ex = null;
-		this.se = null;
-                this.cuerpo = null;
-	}
-
-	public NodoBase getAs() {
-		return as;
-	}
-
-	public void setAs(NodoBase as) {
-		this.as = as;
-	}
-
-	public NodoBase getEx() {
-		return ex;
-	}
-
-	public void setEx(NodoBase ex) {
-		this.ex = ex;
-	}
-
-	public NodoBase getSe() {
-		return se;
-	}
-
-	public void setSe(NodoBase se) {
-		this.se = se;
-	}
-	public NodoBase getCuerpo() {
-		return cuerpo;
-	}
-
-	public void setCuerpo(NodoBase cuerpo) {
-		this.cuerpo = cuerpo;
-	}
-=======
     private NodoBase inicio;
     private NodoBase compara;
     private NodoBase aumento;
@@ -107,6 +54,5 @@ public class NodoFor extends NodoBase {
     public void setSentencias(NodoBase sentencias) {
         this.sentencias = sentencias;
     }
->>>>>>> 9ffbdb3569c8bdba6165506f7730643e1bc7e0a2
 
 }

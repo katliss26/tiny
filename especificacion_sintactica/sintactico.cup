@@ -181,12 +181,9 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3b.1"); 
 						RESULT=sfor;
 						:}
-<<<<<<< HEAD:especificacion_sintactica/Gramatica.cup
-=======
 			| call_func:safun	{: if(modoDepuracion) System.out.println("\t regla 3e"); 
 					RESULT=safun;
 					:}
->>>>>>> 9ffbdb3569c8bdba6165506f7730643e1bc7e0a2:especificacion_sintactica/sintactico.cup
             | assign_stmt:sasi	{: if(modoDepuracion) System.out.println("\t regla 3c"); 
 						RESULT=sasi;
 						:}
@@ -228,15 +225,6 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba SEMI {: if(modoDepuracio
 							:}
 		;
 
-<<<<<<< HEAD:especificacion_sintactica/Gramatica.cup
-for_stmt	::=	FOR LPAREN assign_stmt:as SEMI exp:ex SEMI assign_stmt:se  RPAREN
-				stmt_seq:cuerpo
-				END 
-				{: if(modoDepuracion) System.out.println("\t regla FOR"); 
-							RESULT = new NodoFor(as,ex,se,cuerpo);
-							:}
-							;
-=======
 for_stmt	::=	FOR LPAREN for_assign:inicio SEMI exp:comparacion SEMI for_assign:aumento  RPAREN stmt_seq:sentencias END
 				{: if(modoDepuracion) System.out.println("\t regla FOR"); 
 							RESULT = new NodoFor(inicio,comparacion,aumento,sentencias);
@@ -252,7 +240,6 @@ for_assign	::=	ID:variable ASSIGN exp:ex	{: if(modoDepuracion) System.out.printl
 					:}
 		;
 		
->>>>>>> 9ffbdb3569c8bdba6165506f7730643e1bc7e0a2:especificacion_sintactica/sintactico.cup
 
 call_func ::=  ID:variable LPAREN RPAREN SEMI
 				{: if(modoDepuracion) System.out.println("\t funcion sin asignacion y sin parametros"); 
