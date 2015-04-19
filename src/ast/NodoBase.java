@@ -5,7 +5,8 @@ public class NodoBase {
 	 * 
 	 * ESTE MODELO DE AST PUEDE SER MEJORADO DE MUCHAS FORMAS, POR SIMPLIFICACION Y
 	 * DIDACTICA EN CLASE, SE LLEVARA A CABO DE FORMA MUY SIMPLE Y POCO FLEXIBLE
-	 * */
+	 *
+         */
 	
 	private NodoBase HermanoDerecha;
 
@@ -30,5 +31,7 @@ public class NodoBase {
 	public boolean TieneHermano() {
 		return (HermanoDerecha!=null);
 	}
-	
+	public boolean NoTieneHermano() {
+		return (HermanoDerecha==null);
+	}
 }

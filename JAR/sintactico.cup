@@ -7,7 +7,10 @@ action code {:
 	private boolean modoDepuracion=false;
 	private NodoBase ast=null;
 	private int lineanum=0;
+<<<<<<< HEAD
 	private int ambito=0;
+=======
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 	
 	//Debe ser llamada solo despues de un parse(), en caso contrario retornara null siempre;
 	public NodoBase getASTroot(){
@@ -96,6 +99,7 @@ program     ::=  start_block:s	{:System.out.println("\t regla 1");
 					ast = s;
 					:}
 			;
+<<<<<<< HEAD
 start_block	::=  func_stmt:fc start_principal:cont start_block:sb 
 				{:
 					System.out.println("\t Una o mas Funciones");
@@ -106,6 +110,16 @@ start_block	::=  func_stmt:fc start_principal:cont start_block:sb
 				{:System.out.println("\t ir a el bloque principal");
 					RESULT = new NodoPrincipal(null,st,null,ambito);
 					ambito++;
+=======
+start_block	::=  func_stmt:fc start_principal start_block 
+				{:
+					System.out.println("\t Una o mas Funciones");
+					RESULT = fc;
+				:}
+				| start_principal:st
+				{:System.out.println("\t ir a el bloque principal");
+					RESULT = st;
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 				:}			
 			;
 start_principal ::= BEGIN stmt_seq:s END	
@@ -115,9 +129,14 @@ start_principal ::= BEGIN stmt_seq:s END
 			;	
 func_stmt 	::= VOID ID:nombre LPAREN RPAREN 
 				{: if(modoDepuracion) System.out.println("\t funcion VOID sin parametros"); 
+<<<<<<< HEAD
 
 				     RESULT=new NodoFuncion("VOID",new NodoIdentificador(nombre.toString())); 
 				:}/*
+=======
+				     RESULT=new NodoFuncion("VOID",nombre.toString()); 
+				:}
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 				|BOOL ID:nombre LPAREN RPAREN
 				{: if(modoDepuracion) System.out.println("\t funcion BOOL sin parametros");
 				    RESULT=new NodoFuncion("BOOL",nombre.toString()); 
@@ -128,6 +147,7 @@ func_stmt 	::= VOID ID:nombre LPAREN RPAREN
 				:}
 				|VOID ID:nombre LPAREN arg_stmt:ex RPAREN 
 				{: if(modoDepuracion) System.out.println("\t funcion VOID con parametros"); 
+<<<<<<< HEAD
 					RESULT=new NodoFuncion("VOID",nombre.toString(),ex,null); 	
 				:}
 				|BOOL ID:nombre LPAREN arg_stmt:ex RPAREN
@@ -140,6 +160,20 @@ func_stmt 	::= VOID ID:nombre LPAREN RPAREN
 				:}*/
 		;
 /*arg_stmt	::= BOOL ID:nombre COMA arg_stmt:ar_st 
+=======
+				RESULT=new NodoFuncion("VOID",nombre.toString(),ex,null); 	
+				:}
+				|BOOL ID:nombre LPAREN arg_stmt:ex RPAREN
+				{: if(modoDepuracion) System.out.println("\t funcion BOOL con parametros"); 
+				RESULT=new NodoFuncion("BOOL",nombre.toString(),ex,null); 	
+				:}
+				|INT ID:nombre LPAREN arg_stmt:ex RPAREN
+				{: if(modoDepuracion) System.out.println("\t funcion INT con parametros"); 
+				RESULT=new NodoFuncion("INT",nombre.toString(),ex,null); 	
+				:}
+		;
+arg_stmt	::= BOOL ID:nombre COMA arg_stmt:ar_st 
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 				{: if(modoDepuracion) System.out.println("\t Argumento 1"); 
 					RESULT=new NodoFuncion("BOOL",nombre.toString(),null,ar_st);
 				:}
@@ -155,7 +189,11 @@ func_stmt 	::= VOID ID:nombre LPAREN RPAREN
 				{: if(modoDepuracion) System.out.println("\t Argumento 4"); 
 					RESULT=new NodoFuncion("BOOL",variable.toString());	 
 				:}
+<<<<<<< HEAD
 		;*/
+=======
+		;
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 stmt_seq    ::= stmt_seq:ini stmt:sent	{: if(modoDepuracion) System.out.println("\t regla 2a"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
@@ -239,6 +277,7 @@ for_assign	::=	ID:variable ASSIGN exp:ex	{: if(modoDepuracion) System.out.printl
 					}
 					:}
 		;
+<<<<<<< HEAD
 		
 
 call_func ::=  ID:variable LPAREN RPAREN SEMI
@@ -248,12 +287,35 @@ call_func ::=  ID:variable LPAREN RPAREN SEMI
 				| ID:variable LPAREN arg_call_func:arg RPAREN SEMI
 				{: if(modoDepuracion) System.out.println("\t funcion VOID sin parametros"); 
 				  
+=======
+
+call_func ::=  ID:variable LPAREN RPAREN SEMI
+				{: if(modoDepuracion) System.out.println("\t funcion sin asignacion y sin parametros"); 
+					RESULT=new Nodollamar_Funcion(variable.toString(),null);
+				:}
+				| ID:variable ASSIGN ID:fun LPAREN arg_call_func:arg RPAREN SEMI
+				{: if(modoDepuracion) System.out.println("\t funcion sin asignacion y con parametros"); 
+					RESULT=new NodoAsignar_funcion(variable.toString(),new Nodollamar_Funcion(fun.toString(),arg));
+				:}
+				|ID:variable ASSIGN ID:variable1 LPAREN RPAREN SEMI
+				{: if(modoDepuracion) System.out.println("\t funcion con asignacion y sin parametros"); 
+				   RESULT=new NodoAsignar_funcion(variable.toString(),variable1.toString());
+				:}
+				| ID:variable LPAREN arg_call_func:arg RPAREN SEMI
+				{: if(modoDepuracion) System.out.println("\t funcion VOID sin parametros"); 
+				  	RESULT=new Nodollamar_Funcion(variable.toString(),arg);
+
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 				:}
 				;
 
 arg_call_func	::=  arg_call_func:arg COMA exp:ex 
 					{: if(modoDepuracion) System.out.println("\t Argumento 2"); 
+<<<<<<< HEAD
 					RESULT=new Nodollamar_Funcion(arg,ex);
+=======
+					RESULT=new Nodollamar_Funcion("null",arg,ex);
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 					  
 					:}
 					| exp:ex 
@@ -265,7 +327,11 @@ arg_call_func	::=  arg_call_func:arg COMA exp:ex
 assign_stmt ::= ID:variable
 				ASSIGN exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
 					if(variable!=null)
+<<<<<<< HEAD
 					RESULT = new NodoAsignacion(new NodoIdentificador(variable.toString()),ex);
+=======
+					RESULT = new NodoAsignacion(variable.toString(),ex);
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 					else{
 					RESULT = null;
 					System.out.println("Ocurrio error en cup # 0001");
@@ -279,15 +345,24 @@ assign_stmt ::= ID:variable
 		;	
 
 
+<<<<<<< HEAD
 read_stmt   ::= READ exp:variable SEMI	{: if(modoDepuracion) System.out.println("\t regla 8"); 
 				     System.out.println("Leyendo Variable");
+=======
+read_stmt   ::= READ ID:variable SEMI	{: if(modoDepuracion) System.out.println("\t regla 7"); 
+					System.out.println("Leyendo Variable");
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 					if(variable!=null)
 					RESULT = new NodoLeer(variable.toString());
 					else{
 					RESULT = null;
 					System.out.println("Ocurrio error en cup # 0002");
 					}
+<<<<<<< HEAD
 					:}	
+=======
+					:}
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 		;
 
 write_stmt  ::= WRITE exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t regla 8"); 
@@ -295,6 +370,7 @@ write_stmt  ::= WRITE exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t r
 					:}
 		;
 
+<<<<<<< HEAD
 type_stmt  ::= INT dec:di SEMI
 				{: if(modoDepuracion) System.out.println("\t regla 8x");
                 System.out.println("\t tipo INT");
@@ -305,6 +381,17 @@ type_stmt  ::= INT dec:di SEMI
                 RESULT=new NodoDeclaracion("BOOL",db);
                 :}                
                ;
+=======
+type_stmt  ::= INT dec:di SEMI {: if(modoDepuracion) System.out.println("\t regla 8x"); 
+				       	System.out.println("\t tipo INT");
+				       	RESULT=di;
+				:}
+				| BOOL dec:db SEMI {: if(modoDepuracion) System.out.println("\t regla 8x"); 
+				       	System.out.println("\t tipo BOOL");
+				         RESULT=db;
+					:}		
+		;
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 
 
 dec        ::= ID:variable COMA dec:ex	{: 
@@ -418,12 +505,21 @@ term        ::= term:exI TIMES factor:exD	{: if(modoDepuracion) System.out.print
 
 factor      ::= ID:valor LPAREN RPAREN
 		{: if(modoDepuracion) System.out.println("\t regla 12a"); 
+<<<<<<< HEAD
                  RESULT= new Nodollamar_Funcion(valor.toString());
 		:}
 		| ID:valor LPAREN arg_call_func:ex RPAREN
 		{: if(modoDepuracion) System.out.println("\t regla 12a"); 
 		       //RESULT= new Nodollamar_Funcion(valor.toString(),ex);
 		:}
+=======
+							
+							:}
+		| ID:valor LPAREN exp:ex RPAREN
+		{: if(modoDepuracion) System.out.println("\t regla 12a"); 
+							
+							:}
+>>>>>>> da5c2001c62295eb3704df7daee2b1a5d53ae787
 		|LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla 12a"); 
 							RESULT = ex;
 							:}
