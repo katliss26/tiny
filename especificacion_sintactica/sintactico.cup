@@ -232,7 +232,7 @@ for_stmt	::=	FOR LPAREN for_assign:inicio SEMI exp:comparacion SEMI for_assign:a
 							;
 for_assign	::=	ID:variable ASSIGN exp:ex	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
 					if(variable!=null)
-					RESULT = new NodoAsignacion(variable.toString(),ex);
+					RESULT = new NodoAsignacion(new NodoIdentificador(variable.toString()),ex);
 					else{
 					RESULT = null;
 					System.out.println("Ocurrio error en cup # 0001");
@@ -265,7 +265,7 @@ arg_call_func	::=  arg_call_func:arg COMA exp:ex
 assign_stmt ::= ID:variable
 				ASSIGN exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
 					if(variable!=null)
-					RESULT = new NodoAsignacion(variable.toString(),ex);
+					RESULT = new NodoAsignacion(new NodoIdentificador(variable.toString()),ex);
 					else{
 					RESULT = null;
 					System.out.println("Ocurrio error en cup # 0001");

@@ -30,6 +30,8 @@ public class Compilador {
 		ast.Util.imprimirAST(root);
 		TablaSimbolos ts = new TablaSimbolos();
 		ts.cargarTabla(root);
+                Semantica obj=new Semantica(ts,root);
+                
 		ts.ImprimirClaves();
 	    //REALIZAR ACA ANALISIS SEMANTICO
 		Generador.setTablaSimbolos(ts);
