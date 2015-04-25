@@ -7,7 +7,8 @@ public class RegistroSimbolo {
     private int DireccionMemoria;
     private String tipo;
     private int tamano;
-
+    private int valor;
+    
     public RegistroSimbolo(String identificador, int numLinea, int direccionMemoria, String tipo, int tamano) {
         super();
         this.identificador = identificador;
@@ -37,6 +38,13 @@ public class RegistroSimbolo {
         return tamano;
     }
 
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
     public void setDireccionMemoria(int direccionMemoria) {
         DireccionMemoria = direccionMemoria;
     }

@@ -1,0 +1,51 @@
+bool call ()
+begin
+	bool b;
+	int x;
+	read x;
+	if x>= 30 then
+		x:=x/2;
+		if x< 30 then
+			b:=true;
+		else
+			b:=false;
+		end
+	else
+		return false;
+	end
+	return b;
+end 
+int funcion(bool b,int x, int t) 
+begin
+	if b then
+		for(x:=0;x<=10;x:=x+2)
+			write (x*10)/2;
+		end
+	else
+		read x;
+	end
+	return x;
+end
+int ben(int x, int y, int z) 
+begin
+	write x;
+	repeat
+		y:=y-z;
+		write y;
+	until y<10;
+	return x;
+end
+begin
+	int k,i, j, v[10];
+	bool h;
+	v[5]:= ben(2*((10+5)+8),178/5*6+98+64,40/2*8+63);
+	for(j:=0; j>3; j:=j+1)
+		i:=(i+j)*2;
+		write i;
+	end
+	i:=funcion(call(),i,ben(i+j,v[5]+30,175/50)+10);
+	v[3]:=45;
+	h:=true;
+	j:=funcion(i,10,53);
+	write i+j;
+end

@@ -26,6 +26,8 @@ public class UtGen {
 	 * al inicio de la memoria para el almacenamiento de variables globales
 	 */
 	public static int  GP=5;
+        
+	public static int  DM=4; //Direccion del main
 
 	/* Defino al registro[0] como el acumulador 1 */
 	public static int  AC=0;
@@ -35,7 +37,7 @@ public class UtGen {
 	
 	
 	public static void emitirComentario(String c){
-		if(debug) System.out.println("*      "+c);
+		//if(debug) System.out.println(" -- "+c);
 	}
 
 	/* Este procedimiento emite sentencias RO (Solo Registro)
@@ -49,9 +51,10 @@ public class UtGen {
 	 * c = comentario a emitir en modo debug
 	 */
 	public static void emitirRO(String op, int r, int s, int t, String c){
-		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+s+","+t );
-		if(debug)
-			System.out.print("      "+c);
+		System.out.print((instruccionActual++)+":\t"+op+"\t"+r+","+s+","+t );
+		/*if(debug)
+			System.out.print("\t -- "+c);
+                */
 		System.out.print("\n");
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;
@@ -68,10 +71,11 @@ public class UtGen {
 	 * c = comentario a emitir en modo debug
 	 */	
 	public static void emitirRM(String op, int r, int d, int s, String c){
-		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+d+"("+s+")" );
-		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");
+		System.out.print((instruccionActual++)+":\t"+op+"\t"+r+","+d+"("+s+")" );
+		/*if(debug)
+			System.out.print("\t -- "+c);
+		*/
+                System.out.print("\n");
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
 	}
@@ -114,11 +118,12 @@ public class UtGen {
 	 * c = comentario a emitir en modo debug
 	 */
 	public static void emitirRM_Abs(String op, int r, int a, String c){
-		System.out.print((instruccionActual)+":       "+op+"       "+r+","+(a-(instruccionActual+1))+"("+PC+")" );
+		System.out.print((instruccionActual)+":\t"+op+"\t"+r+","+(a-(instruccionActual+1))+"("+PC+")" );
 		++instruccionActual;
-		if(debug)
-			System.out.print("      "+c);
-		System.out.print("\n");
+		/*if(debug)
+			System.out.print("\t -- "+c);
+		*/
+                System.out.print("\n");
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
 	}

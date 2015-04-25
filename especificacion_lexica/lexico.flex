@@ -32,7 +32,7 @@ import java_cup.runtime.*;
 %column
 
 digito		= [0-9]
-numero		= -?{digito}+
+numero		= {digito}+
 letra			= [a-zA-Z]
 identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
@@ -86,6 +86,12 @@ espacio		= [ \t]+
 "write"         {	if(debug) System.out.println("token WRITE");
 			return sf.newSymbol("WRITE",sym.WRITE);
 			}
+"true"         {	if(debug) System.out.println("token TRUE");
+			return sf.newSymbol("TRUE",sym.TRUE);
+			}
+"false"         {	if(debug) System.out.println("token FALSE");
+			return sf.newSymbol("FALSE",sym.FALSE);
+			}						
 ":="            {	if(debug) System.out.println("token ASSIGN");
 			return sf.newSymbol("ASSIGN",sym.ASSIGN);
 			}

@@ -20,9 +20,10 @@ action code {:
 terminal BOOL;
 terminal VOID;
 terminal INT;
+terminal TRUE;
+terminal FALSE;
 terminal BEGIN;
 terminal AND;
-terminal FUNCTION;
 terminal OR;
 terminal RETURN;
 terminal COMA;
@@ -82,7 +83,6 @@ non terminal NodoBase factor;
 non terminal NodoBase for_assign;
 non terminal NodoBase dec;
 non terminal NodoBase type_stmt;
-non terminal NodoBase numNeg;
 /* Precedencia de operadores */
 precedence left PLUS;
 precedence left MINUS;
@@ -117,45 +117,45 @@ func_stmt 	::= VOID ID:nombre LPAREN RPAREN
 				{: if(modoDepuracion) System.out.println("\t funcion VOID sin parametros"); 
 
 				     RESULT=new NodoFuncion("VOID",new NodoIdentificador(nombre.toString())); 
-				:}/*
+				:}
 				|BOOL ID:nombre LPAREN RPAREN
 				{: if(modoDepuracion) System.out.println("\t funcion BOOL sin parametros");
-				    RESULT=new NodoFuncion("BOOL",nombre.toString()); 
+				    RESULT=new NodoFuncion("BOOL",new NodoIdentificador(nombre.toString()));
 				:}
 				|INT ID:nombre LPAREN RPAREN
 				{: if(modoDepuracion) System.out.println("\t funcion INT sin parametros"); 
-					RESULT=new NodoFuncion("INT",nombre.toString()); 
+					RESULT=new NodoFuncion("INT",new NodoIdentificador(nombre.toString()));
 				:}
 				|VOID ID:nombre LPAREN arg_stmt:ex RPAREN 
 				{: if(modoDepuracion) System.out.println("\t funcion VOID con parametros"); 
-					RESULT=new NodoFuncion("VOID",nombre.toString(),ex,null); 	
+					RESULT=new NodoFuncion("VOID",new NodoIdentificador(nombre.toString()),ex,null); 	
 				:}
 				|BOOL ID:nombre LPAREN arg_stmt:ex RPAREN
 				{: if(modoDepuracion) System.out.println("\t funcion BOOL con parametros"); 
-					RESULT=new NodoFuncion("BOOL",nombre.toString(),ex,null); 	
+					RESULT=new NodoFuncion("BOOL",new NodoIdentificador(nombre.toString()),ex,null); 	
 				:}
 				|INT ID:nombre LPAREN arg_stmt:ex RPAREN
 				{: if(modoDepuracion) System.out.println("\t funcion INT con parametros"); 
-					RESULT=new NodoFuncion("INT",nombre.toString(),ex,null); 	
-				:}*/
+					RESULT=new NodoFuncion("INT",new NodoIdentificador(nombre.toString()),ex,null); 	
+				:}
 		;
-/*arg_stmt	::= BOOL ID:nombre COMA arg_stmt:ar_st 
+arg_stmt	::= BOOL ID:nombre COMA arg_stmt:ar_st 
 				{: if(modoDepuracion) System.out.println("\t Argumento 1"); 
-					RESULT=new NodoFuncion("BOOL",nombre.toString(),null,ar_st);
+					RESULT=new NodoIdentificador("BOOL",nombre,ar_st);
 				:}
 				| INT ID:nombre COMA arg_stmt:ar_st
 				{: if(modoDepuracion) System.out.println("\t Argumento 2"); 
-					 RESULT=new NodoFuncion("INT",nombre.toString(),null,ar_st);
+					 RESULT=new NodoIdentificador("INT",nombre,ar_st);
 					:}
-				| INT ID:variable
+				| INT ID:nombre
 				{: if(modoDepuracion) System.out.println("\t Argumento 3"); 
-				    RESULT=new NodoFuncion("INT",variable.toString());	 
+				    RESULT=new NodoIdentificador("INT",nombre,null);
 				:}
-				| BOOL ID:variable
+				| BOOL ID:nombre
 				{: if(modoDepuracion) System.out.println("\t Argumento 4"); 
-					RESULT=new NodoFuncion("BOOL",variable.toString());	 
+					RESULT=new NodoIdentificador("BOOL",nombre,null);	 
 				:}
-		;*/
+		;
 stmt_seq    ::= stmt_seq:ini stmt:sent	{: if(modoDepuracion) System.out.println("\t regla 2a"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
@@ -207,7 +207,7 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 
 retorna_stmt ::= RETURN exp:ex SEMI{:
 	  if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
-       RESULT=ex;
+       RESULT=new NodoReturn(ex);
 :}
 ;
 
@@ -232,7 +232,7 @@ for_stmt	::=	FOR LPAREN for_assign:inicio SEMI exp:comparacion SEMI for_assign:a
 							;
 for_assign	::=	ID:variable ASSIGN exp:ex	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
 					if(variable!=null)
-					RESULT = new NodoAsignacion(variable.toString(),ex);
+					RESULT = new NodoAsignacion(new NodoIdentificador(variable.toString()),ex);
 					else{
 					RESULT = null;
 					System.out.println("Ocurrio error en cup # 0001");
@@ -247,39 +247,40 @@ call_func ::=  ID:variable LPAREN RPAREN SEMI
 				:}
 				| ID:variable LPAREN arg_call_func:arg RPAREN SEMI
 				{: if(modoDepuracion) System.out.println("\t funcion VOID sin parametros"); 
-				  
+				  RESULT=new Nodollamar_Funcion(variable.toString(),arg);
 				:}
 				;
 
-arg_call_func	::=  arg_call_func:arg COMA exp:ex 
+arg_call_func	::=  exp:ex COMA arg_call_func:arg 
 					{: if(modoDepuracion) System.out.println("\t Argumento 2"); 
-					RESULT=new Nodollamar_Funcion(arg,ex);
+					RESULT=new NodoArg_Funcion(ex,arg);
 					  
 					:}
 					| exp:ex 
 					{: if(modoDepuracion) System.out.println("\t Argumento 2"); 
-					RESULT=ex;
+					RESULT= new NodoArg_Funcion(ex);
 					:}
 					;
+
 
 assign_stmt ::= ID:variable
 				ASSIGN exp:ex SEMI	{: if(modoDepuracion) System.out.println("\t regla 6 parte final");
 					if(variable!=null)
-					RESULT = new NodoAsignacion(variable.toString(),ex);
+					RESULT = new NodoAsignacion(new NodoIdentificador(variable.toString()),ex);
 					else{
 					RESULT = null;
 					System.out.println("Ocurrio error en cup # 0001");
 					}
 					:}
-				| ID:nombre LCORCH NUM:valor RCORCH ASSIGN exp:ex SEMI
+				| ID:nombre LCORCH exp:expre RCORCH ASSIGN exp:ex SEMI
 		    	{:
-				 RESULT=new NodoAsignacion_Vector(new NodoVector(nombre.toString(),valor),ex);
+				 RESULT=new NodoAsignacion_Vector(new NodoVector(new NodoIdentificador(nombre.toString()),expre),ex);
 				:}
 			
 		;	
 
 
-read_stmt   ::= READ exp:variable SEMI	{: if(modoDepuracion) System.out.println("\t regla 8"); 
+read_stmt   ::= READ ID:variable SEMI	{: if(modoDepuracion) System.out.println("\t regla 8"); 
 				     System.out.println("Leyendo Variable");
 					if(variable!=null)
 					RESULT = new NodoLeer(variable.toString());
@@ -320,17 +321,16 @@ dec        ::= ID:variable COMA dec:ex	{:
 
 	           |ID:nombre LCORCH NUM:valor RCORCH COMA dec:exD
             	{: if(modoDepuracion) System.out.println("\t regla 11c"); 
-          		   RESULT = new NodoVector(nombre.toString(),valor,exD);  
+          		   RESULT = new NodoVector(new NodoIdentificador(nombre.toString()),valor,exD);  
 	   			  System.out.println("\t ID"); 
 	            :}
 	        	| ID:nombre LCORCH NUM:valor RCORCH
             	 {: 
             	 if(modoDepuracion) System.out.println("\t regla 11c"); 
-	             RESULT = new NodoVector(nombre.toString(),valor); 
+	             RESULT = new NodoVector(new NodoIdentificador(nombre.toString()),valor); 
 	        	 System.out.println("\t ID"); 
 	        	:}
 		   ;
-
 
 
 /* implementando OR & AND */
@@ -422,9 +422,9 @@ factor      ::= ID:valor LPAREN RPAREN
 		:}
 		| ID:valor LPAREN arg_call_func:ex RPAREN
 		{: if(modoDepuracion) System.out.println("\t regla 12a"); 
-		       //RESULT= new Nodollamar_Funcion(valor.toString(),ex);
+		       RESULT= new Nodollamar_Funcion(valor.toString(),ex);
 		:}
-		|LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla 12a"); 
+		| LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla 12a"); 
 							RESULT = ex;
 							:}
 		| NUM:valor	{: if(modoDepuracion) System.out.println("\t regla 12b"); 
@@ -433,27 +433,30 @@ factor      ::= ID:valor LPAREN RPAREN
 						RESULT= new NodoValor(valor);					
 					}else{
 						RESULT = null;
-						System.out.println("Ocurrio error en cup # 0005");
+						System.out.println("Ocurrio error en cup # 0005-numero");
 					}
 					:}
+		| TRUE {: if(modoDepuracion) System.out.println("\t regla 12b"); 
+					System.out.println("Devolvi nodo BOOLEANO");
+						RESULT= new NodoBooleano(true);					
+			:}
+		| FALSE {: if(modoDepuracion) System.out.println("\t regla 12b"); 
+					System.out.println("Devolvi nodo BOOLEANO");
+						RESULT= new NodoBooleano(false);					
+			:}				
 		| ID:variable	{: if(modoDepuracion) System.out.println("\t regla 12c"); 
 					if(variable!=null){
 						System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
 						RESULT= new NodoIdentificador(variable.toString());		
 					}else{
 						RESULT = null;
-						System.out.println("Ocurrio error en cup # 0005");
+						System.out.println("Ocurrio error en cup # 0005-id");
 					}
 					:}
-			| ID:declaracion LCORCH NUM:valor RCORCH{:
-		System.out.println("Vector con un numero adentro");
-		RESULT  = new NodoVector(declaracion,valor);
-		:}
-		| numNeg {: if(modoDepuracion) System.out.println("\t regla 12a"); 
-							System.out.println("numNeg");
-							/*CrearNodo*/
-							/*RESULT = ex;*/
-							:}
+			| ID:declaracion LCORCH exp:ex RCORCH{:
+		System.out.println("Vector con una exp adentro");
+		RESULT  = new NodoVector(new NodoIdentificador(declaracion.toString()),ex);
+		:}		
 		| error	{: if(modoDepuracion) System.out.println("\t regla 12d"); 
 				System.out.println("Ocurrio error en cup # 0003");
 				RESULT=null;

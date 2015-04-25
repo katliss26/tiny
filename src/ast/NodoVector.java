@@ -10,19 +10,29 @@ package ast;
  */
 public class NodoVector extends NodoBase{
     
-        private String identificador;
-	private  int  valor;
+        private NodoIdentificador identificador;
+    private  int  valor;
+    private NodoBase expresion;
 
-    public String getIdentificador() {
+    public NodoIdentificador getIdentificador() {
         return identificador;
     }
 
-    public NodoVector(String identificador, int valor) {
+    public NodoBase getExpresion() {
+        return expresion;
+    }
+
+    public NodoVector(NodoIdentificador identificador, NodoBase expresion) {
+        this.identificador = identificador;
+        this.expresion = expresion;
+    }
+
+    public NodoVector(NodoIdentificador identificador, int valor) {
         this.identificador = identificador;
         this.valor = valor;
     }
 
-    public NodoVector(String identificador, int valor, NodoBase hermanoDerecha) {
+    public NodoVector(NodoIdentificador identificador, int valor, NodoBase hermanoDerecha) {
         super(hermanoDerecha);
         this.identificador = identificador;
         this.valor = valor;
@@ -31,14 +41,4 @@ public class NodoVector extends NodoBase{
     public int getValor() {
         return valor;
     }
-
-    
-
-   
-
-        
-  
-
-
-    
 }

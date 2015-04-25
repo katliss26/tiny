@@ -1,7 +1,15 @@
-void id()
 begin
-	bool t,a,s;
-end
-begin
-	int t,a,s;
+	
+	int x,y;
+	repeat
+		read x;
+		if x>20 or x=2 and x<10 then
+			write 999;
+		else
+			write 0;
+		end
+		read y;
+	until y=0;
+
+
 end

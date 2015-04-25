@@ -16,7 +16,7 @@ public class Util {
             } else if (raiz instanceof NodoRepeat) {
                 System.out.println("Repeat");
             } else if (raiz instanceof NodoAsignacion) {
-                System.out.println("Asignacion a: " + ((NodoAsignacion) raiz).getIdentificador());
+              //  System.out.println("Asignacion a: " + ((NodoAsignacion) raiz).getIdentificador());
             } else if (raiz instanceof NodoLeer) {
                 System.out.println("Lectura: " + ((NodoLeer) raiz).getIdentificador());
             } else if (raiz instanceof NodoEscribir) {

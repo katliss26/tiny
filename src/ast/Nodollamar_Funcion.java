@@ -21,15 +21,10 @@ public class Nodollamar_Funcion extends NodoBase {
     }
 
    
-    public Nodollamar_Funcion(String i,NodoBase arg, NodoBase hermanoDerecha) {
-        super(hermanoDerecha);
+    public Nodollamar_Funcion(String i,NodoBase arg) {
+       
         this.identificador=i;
         this.arg = arg;
-    }
-    public Nodollamar_Funcion(NodoBase arg,NodoBase ex){
-        this.arg=arg;
-        this.exp=ex;
-        
     }
 
     public NodoBase getExp() {

@@ -2,8 +2,8 @@ package ast;
 
 public class NodoIdentificador extends NodoBase {
 	private String nombre;
+        private String tipo;
 
-        //tipo
     public NodoIdentificador(String nombre, NodoBase hermanoDerecha) {
         super(hermanoDerecha);
         this.nombre = nombre;
@@ -17,9 +17,19 @@ public class NodoIdentificador extends NodoBase {
 	public NodoIdentificador() {
 		super();
 	}
+        //arg funciones
+        public NodoIdentificador(String tipo, String nombre, NodoBase hermanoDerecha) {
+		super(hermanoDerecha);
+		this.nombre = nombre;
+                this.tipo = tipo;
+                
+	}
 
 	public String getNombre() {
 		return nombre;
+	}
+        public String getTipo() {
+		return tipo;
 	}
 
 }
